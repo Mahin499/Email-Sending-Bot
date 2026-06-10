@@ -1,0 +1,4 @@
+timestamp,recipient_email,company,role,subject,status,error_message
+2026-06-10 09:09:48,priya@example.com,Acme AI,Backend Engineering Intern,Quick note on the Backend Engineering Intern role at Acme AI,skipped,
+2026-06-10 09:09:49,alex@startupcorp.io,StartupCorp,Junior Software Engineer,Quick note on the Junior Software Engineer role at StartupCorp,skipped,
+2026-06-10 09:09:50,sarah.connor@cyberdyne.systems,Cyberdyne Systems,Robotics Integration Specialist,Quick note on the Robotics Integration Specialist role at Cyberdyne Systems,skipped,

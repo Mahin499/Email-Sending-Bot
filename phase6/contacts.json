@@ -1,0 +1,35 @@
+[
+  {
+    "recipient_name": "Priya Sharma",
+    "recipient_email": "priya@example.com",
+    "company": "Acme AI",
+    "role": "Backend Engineering Intern",
+    "job_url": "https://example.com/jobs/backend-intern",
+    "personalization_note": "Acme AI recently launched a new open-source agent workflow automation engine.",
+    "candidate_name": "Mahin",
+    "candidate_background": "Python backend developer with experience in API development and building LLM agents.",
+    "portfolio_url": "https://github.com/mahin"
+  },
+  {
+    "recipient_name": "Alex Mercer",
+    "recipient_email": "alex@startupcorp.io",
+    "company": "StartupCorp",
+    "role": "Junior Software Engineer",
+    "job_url": "https://startupcorp.io/careers/junior-dev",
+    "personalization_note": "StartupCorp just secured a Series A funding round and is expanding the core product engineering team.",
+    "candidate_name": "Mahin",
+    "candidate_background": "full-stack developer with experience in building clean, responsive user interfaces and robust APIs.",
+    "portfolio_url": "https://github.com/mahin"
+  },
+  {
+    "recipient_name": "Sarah Connor",
+    "recipient_email": "sarah.connor@cyberdyne.systems",
+    "company": "Cyberdyne Systems",
+    "role": "Robotics Integration Specialist",
+    "job_url": "https://cyberdyne.systems/jobs/robotics",
+    "personalization_note": "Cyberdyne is heavily researching automated neural net architectures for advanced physical robotics.",
+    "candidate_name": "Mahin",
+    "candidate_background": "systems engineer specializing in distributed systems, asynchronous event queues, and real-time sensory data processing.",
+    "portfolio_url": "https://github.com/mahin"
+  }
+]

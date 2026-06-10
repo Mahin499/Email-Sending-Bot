@@ -1,0 +1,13 @@
+timestamp,recipient_email,company,role,subject,status,error_message
+2026-06-10 08:58:10,priya@example.com,Acme AI,Backend Engineering Intern,Quick note on the Backend Engineering Intern role at Acme AI,sent,
+2026-06-10 08:58:10,alex@startupcorp.io,StartupCorp,Junior Software Engineer,Quick note on the Junior Software Engineer role at StartupCorp,drafted,
+2026-06-10 08:58:10,sarah.connor@cyberdyne.systems,Cyberdyne Systems,Robotics Integration Specialist,Quick note on the Robotics Integration Specialist role at Cyberdyne Systems,skipped,
+2026-06-10 08:58:22,priya@example.com,Acme AI,Backend Engineering Intern,[System Skip],skipped,Duplicate recipient - already contacted.
+2026-06-10 08:58:22,alex@startupcorp.io,StartupCorp,Junior Software Engineer,[System Skip],skipped,Duplicate recipient - already contacted.
+2026-06-10 08:58:22,sarah.connor@cyberdyne.systems,Cyberdyne Systems,Robotics Integration Specialist,Quick note on the Robotics Integration Specialist role at Cyberdyne Systems,skipped,
+2026-06-10 09:04:10,priya@example.com,Acme AI,Backend Engineering Intern,[System Skip],skipped,Duplicate recipient - already contacted.
+2026-06-10 09:04:10,alex@startupcorp.io,StartupCorp,Junior Software Engineer,[System Skip],skipped,Duplicate recipient - already contacted.
+2026-06-10 09:04:11,sarah.connor@cyberdyne.systems,Cyberdyne Systems,Robotics Integration Specialist,Quick note on the Robotics Integration Specialist role at Cyberdyne Systems,skipped,
+2026-06-10 09:04:25,priya@example.com,Acme AI,Backend Engineering Intern,[System Skip],skipped,Duplicate recipient - already contacted.
+2026-06-10 09:04:25,alex@startupcorp.io,StartupCorp,Junior Software Engineer,[System Skip],skipped,Duplicate recipient - already contacted.
+2026-06-10 09:04:27,sarah.connor@cyberdyne.systems,Cyberdyne Systems,Robotics Integration Specialist,Exploring the Robotics Integration Specialist role at Cyberdyne Systems,skipped,
