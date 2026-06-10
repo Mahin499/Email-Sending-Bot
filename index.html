@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Closer — Cold Email Operator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #111827;
+            --bg-card: #1f2937;
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #f43f5e;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --warning-bg: #7c2d12;
+            --warning-border: #f97316;
+            --success-color: #10b981;
+            --draft-color: #3b82f6;
+            --skip-color: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        header {
+            margin-bottom: 2rem;
+        }
+
+        .main-title {
+            background: linear-gradient(135deg, #a78bfa, #f43f5e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.05rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* TABS */
+        .tabs-container {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        /* GRID SYSTEM */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* CARDS */
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .recipient-card {
+            border-left: 5px solid var(--accent-primary);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .detail-row {
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* INPUTS & CONTROLS */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            padding: 0.75rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        /* BUTTONS */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s ease, opacity 0.2s ease;
+            border: none;
+            text-align: center;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--accent-secondary);
+            color: white;
+        }
+
+        /* WARNINGS */
+        .warnings-box {
+            background-color: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+        }
+
+        .warnings-box ul {
+            padding-left: 1.25rem;
+            margin-top: 0.5rem;
+        }
+
+        /* PROGRESS */
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar-bg {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-sent { background-color: var(--success-color); color: white; }
+        .badge-drafted { background-color: var(--draft-color); color: white; }
+        .badge-skipped { background-color: var(--skip-color); color: white; }
+        .badge-failed { background-color: var(--accent-secondary); color: white; }
+
+        /* LOADER */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--accent-primary);
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="main-title">THE CLOSER</div>
+            <div class="subtitle">Personalized Cold Outreach Assistant & Send Bot</div>
+        </header>
+
+        <!-- TABS NAVIGATION -->
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab('operator')">✉️ Outreach Operator</button>
+            <button class="tab-btn" onclick="switchTab('targets')">📥 Targets Manager</button>
+            <button class="tab-btn" onclick="switchTab('logs')">📊 Session Logs</button>
+        </div>
+
+        <!-- TAB 1: OPERATOR PANEL -->
+        <div id="panel-operator" class="panel active">
+            <div class="progress-container">
+                <span id="progress-text">Target 0 of 0</span>
+                <div class="progress-bar-bg">
+                    <div id="progress-fill" class="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="layout-grid">
+                <!-- LEFT COLUMN: TARGET CARD -->
+                <div class="column">
+                    <div class="card recipient-card">
+                        <div class="card-title" id="card-recipient-name">Loading Target...</div>
+                        <div class="detail-row"><span class="detail-label">📧 Email:</span> <span id="card-recipient-email">-</span></div>
+                        <div class="detail-row"><span class="detail-label">🏢 Company:</span> <span id="card-recipient-company">-</span></div>
+                        <div class="detail-row"><span class="detail-label">💼 Role:</span> <span id="card-recipient-role">-</span></div>
+                        <div class="detail-row"><span class="detail-label">💡 Note:</span> <span id="card-personalization">-</span></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Candidate Details</div>
+                        <div class="detail-row"><span class="detail-label">Name:</span> <span id="card-candidate-name">-</span></div>
+                        <div class="detail-row"><span class="detail-label">Background:</span> <span id="card-candidate-bg">-</span></div>
+                        <div class="detail-row"><span class="detail-label">Portfolio:</span> <a id="card-candidate-portfolio" href="#" target="_blank">-</a></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: GENERATOR & FORM -->
+                <div class="column">
+                    <div class="card">
+                        <div class="card-title">Outreach Draft Editor</div>
+                        
+                        <div id="loader" style="display: none;">
+                            <div class="spinner"></div>
+                            <p style="text-align: center; color: var(--text-muted);">Refining tone using Groq Llama-3.1 API...</p>
+                        </div>
+
+                        <div id="editor-fields">
+                            <div class="form-group">
+                                <label for="subject-input">Subject Line</label>
+                                <input type="text" id="subject-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="body-input">Email Body</label>
+                                <textarea id="body-input" rows="10"></textarea>
+                            </div>
+
+                            <!-- WARNINGS BOX -->
+                            <div class="warnings-box" id="warnings-box" style="display: none;">
+                                <strong>⚠️ Validation Alerts:</strong>
+                                <ul id="warnings-list"></ul>
+                            </div>
+
+                            <div class="btn-group">
+                                <button class="btn btn-primary" onclick="executeOutreach('sent')">📤 Send Email</button>
+                                <button class="btn btn-secondary" onclick="executeOutreach('drafted')">📁 Create Draft</button>
+                                <button class="btn btn-danger" onclick="executeOutreach('skipped')">⏭️ Skip</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: TARGETS PANEL -->
+        <div id="panel-targets" class="panel">
+            <div class="card">
+                <div class="card-title">Outreach Target List</div>
+                <div style="overflow-x: auto;">
+                    <table id="targets-table">
+                        <thead>
+                            <tr>
+                                <th>Recipient</th>
+                                <th>Email</th>
+                                <th>Company</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="targets-table-body">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: LOGS PANEL -->
+        <div id="panel-logs" class="panel">
+            <div class="card">
+                <div class="card-title">Session Logs</div>
+                <div style="overflow-x: auto;">
+                    <table id="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Email</th>
+                                <th>Company</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN INTERACTIVE JS LOGIC -->
+    <script>
+        // DEFAULT MOCK CONTACTS SEED DATA
+        let contacts = [
+            {
+                "recipient_name": "Priya Sharma",
+                "recipient_email": "priya@example.com",
+                "company": "Acme AI",
+                "role": "Backend Engineering Intern",
+                "job_url": "https://example.com/jobs/backend-intern",
+                "personalization_note": "Acme AI recently launched a new open-source agent workflow automation engine.",
+                "candidate_name": "Mahin",
+                "candidate_background": "Python backend developer with experience in API development and building LLM agents.",
+                "portfolio_url": "https://github.com/mahin"
+            },
+            {
+                "recipient_name": "Alex Mercer",
+                "recipient_email": "alex@startupcorp.io",
+                "company": "StartupCorp",
+                "role": "Junior Software Engineer",
+                "job_url": "https://startupcorp.io/careers/junior-dev",
+                "personalization_note": "StartupCorp just secured a Series A funding round and is expanding the core product engineering team.",
+                "candidate_name": "Mahin",
+                "candidate_background": "full-stack developer with experience in building clean, responsive user interfaces and robust APIs.",
+                "portfolio_url": "https://github.com/mahin"
+            },
+            {
+                "recipient_name": "Sarah Connor",
+                "recipient_email": "sarah.connor@cyberdyne.systems",
+                "company": "Cyberdyne Systems",
+                "role": "Robotics Integration Specialist",
+                "job_url": "https://cyberdyne.systems/jobs/robotics",
+                "personalization_note": "Cyberdyne is heavily researching automated neural net architectures for advanced physical robotics.",
+                "candidate_name": "Mahin",
+                "candidate_background": "systems engineer specializing in distributed systems, asynchronous event queues, and real-time sensory data processing.",
+                "portfolio_url": "https://github.com/mahin"
+            }
+        ];
+
+        let currentIndex = 0;
+        let logs = [];
+
+        // ON APP LOAD
+        document.addEventListener("DOMContentLoaded", () => {
+            renderTarget();
+            renderTargetsTab();
+            
+            // Watch inputs to update warnings in real-time
+            document.getElementById("subject-input").addEventListener("input", validateCurrentFields);
+            document.getElementById("body-input").addEventListener("input", validateCurrentFields);
+        });
+
+        // NAVIGATION TABS
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+            const eventTarget = [...document.querySelectorAll('.tab-btn')].find(btn => btn.textContent.toLowerCase().includes(tabName));
+            if (eventTarget) eventTarget.classList.add('active');
+
+            const targetPanel = document.getElementById(`panel-${tabName}`);
+            if (targetPanel) targetPanel.classList.add('active');
+
+            if (tabName === 'targets') renderTargetsTab();
+            if (tabName === 'logs') renderLogsTab();
+        }
+
+        // RENDER OUTREACH OPERATOR TARGET
+        async function renderTarget() {
+            if (currentIndex >= contacts.length) {
+                document.getElementById("panel-operator").innerHTML = `
+                    <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                        <h2>🎉 Outreach Campaign Finished!</h2>
+                        <p style="color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 2rem;">All targets have been processed successfully.</p>
+                        <button class="btn btn-primary" onclick="restartSession()" style="max-width: 200px; margin: 0 auto;">Restart Campaign</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const contact = contacts[currentIndex];
+            
+            // Progress Bar
+            document.getElementById("progress-text").textContent = `Target ${currentIndex + 1} of ${contacts.length}`;
+            document.getElementById("progress-fill").style.width = `${((currentIndex) / contacts.length) * 100}%`;
+
+            // Left Card Details
+            document.getElementById("card-recipient-name").textContent = contact.recipient_name || "Hiring Manager";
+            document.getElementById("card-recipient-email").textContent = contact.recipient_email;
+            document.getElementById("card-recipient-company").textContent = contact.company;
+            document.getElementById("card-recipient-role").textContent = contact.role;
+            document.getElementById("card-personalization").textContent = contact.personalization_note || "None";
+            
+            document.getElementById("card-candidate-name").textContent = contact.candidate_name;
+            document.getElementById("card-candidate-bg").textContent = contact.candidate_background;
+            
+            const portfolioLink = document.getElementById("card-candidate-portfolio");
+            portfolioLink.href = contact.portfolio_url;
+            portfolioLink.textContent = contact.portfolio_url;
+
+            // Trigger serverless API request to Groq refiner
+            await fetchOutreachDraft(contact);
+        }
+
+        // CALL SERVERLESS PYTHON API ROUTE
+        async function fetchOutreachDraft(contact) {
+            const loader = document.getElementById("loader");
+            const fields = document.getElementById("editor-fields");
+
+            loader.style.display = "block";
+            fields.style.display = "none";
+
+            try {
+                const res = await fetch("/api/generate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(contact)
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById("subject-input").value = data.subject || "";
+                    document.getElementById("body-input").value = data.body || "";
+                } else {
+                    throw new Error("API Response Failed");
+                }
+            } catch (err) {
+                console.error("Using local fallback generator:", err);
+                // Fallback deterministic local generator
+                const recipientGreeting = contact.recipient_name ? contact.recipient_name.split(" ")[0] : "there";
+                document.getElementById("subject-input").value = `Quick note on the ${contact.role} role at ${contact.company}`;
+                document.getElementById("body-input").value = `Hi ${recipientGreeting},\n\nI noticed ${contact.company} is hiring for a ${contact.role}. ${contact.personalization_note || ""}\n\nI'm ${contact.candidate_name}, and I’ve been building projects around ${contact.candidate_background}.\n\nWould you be open to a quick look at my profile or pointing me to the right person?\n\nBest,\n${contact.candidate_name}\n${contact.portfolio_url}`;
+            } finally {
+                loader.style.display = "none";
+                fields.style.display = "block";
+                validateCurrentFields();
+            }
+        }
+
+        // VALIDATION WARNING CHECKS
+        function validateCurrentFields() {
+            const subject = document.getElementById("subject-input").value;
+            const body = document.getElementById("body-input").value;
+            const warningsList = document.getElementById("warnings-list");
+            const warningsBox = document.getElementById("warnings-box");
+
+            warningsList.innerHTML = "";
+            let warnings = [];
+
+            const words = body.trim().split(/\s+/).filter(w => w.length > 0);
+            if (words.length > 150) {
+                warnings.push(`Email body exceeds 150 words (current: ${words.length} words).`);
+            }
+            if (!subject || subject.trim().length === 0) {
+                warnings.push("Subject line is empty.");
+            }
+            if (!body.includes("?")) {
+                warnings.push("Email lacks a clear question or call to action (missing '?').");
+            }
+            const closures = ["Best", "Regards", "Sincerely", "Thanks"];
+            const containsClosure = closures.some(c => body.includes(c));
+            if (!containsClosure) {
+                warnings.push("Email is missing a signature closure (e.g. 'Best', 'Regards').");
+            }
+
+            if (warnings.length > 0) {
+                warnings.forEach(w => {
+                    const li = document.createElement("li");
+                    li.textContent = w;
+                    warningsList.appendChild(li);
+                });
+                warningsBox.style.display = "block";
+            } else {
+                warningsBox.style.display = "none";
+            }
+        }
+
+        // SUBMIT OUTREACH ACTION
+        function executeOutreach(status) {
+            const contact = contacts[currentIndex];
+            const subject = document.getElementById("subject-input").value;
+            
+            // Add to session log
+            logs.push({
+                timestamp: new Date().toLocaleTimeString(),
+                email: contact.recipient_email,
+                company: contact.company,
+                subject: subject,
+                status: status
+            });
+
+            // Update contact list with locally tracked state status
+            contact.status = status;
+
+            // Go to next target
+            currentIndex++;
+            renderTarget();
+        }
+
+        // TAB 2: TARGETS LIST
+        function renderTargetsTab() {
+            const tbody = document.getElementById("targets-table-body");
+            tbody.innerHTML = "";
+
+            contacts.forEach(c => {
+                const tr = document.createElement("tr");
+                const badgeStatus = c.status ? `<span class="badge badge-${c.status}">${c.status}</span>` : `<span class="badge badge-skipped" style="background-color: var(--border-color)">Pending</span>`;
+                tr.innerHTML = `
+                    <td><b>${c.recipient_name || "Hiring Manager"}</b></td>
+                    <td>${c.recipient_email}</td>
+                    <td>${c.company}</td>
+                    <td>${c.role}</td>
+                    <td>${badgeStatus}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // TAB 3: LOGS GRID
+        function renderLogsTab() {
+            const tbody = document.getElementById("logs-table-body");
+            tbody.innerHTML = "";
+
+            if (logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No logs registered in this session yet.</td></tr>`;
+                return;
+            }
+
+            logs.forEach(l => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${l.timestamp}</td>
+                    <td>${l.email}</td>
+                    <td>${l.company}</td>
+                    <td>${l.subject}</td>
+                    <td><span class="badge badge-${l.status}">${l.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // RESET
+        function restartSession() {
+            currentIndex = 0;
+            contacts.forEach(c => delete c.status);
+            logs = [];
+            
+            // Reload Operator UI structure
+            document.getElementById("panel-operator").innerHTML = `
+                <div class="progress-container">
+                    <span id="progress-text">Target 0 of 0</span>
+                    <div class="progress-bar-bg">
+                        <div id="progress-fill" class="progress-bar-fill"></div>
+                    </div>
+                </div>
+                <div class="layout-grid">
+                    <div class="column">
+                        <div class="card recipient-card">
+                            <div class="card-title" id="card-recipient-name">Loading Target...</div>
+                            <div class="detail-row"><span class="detail-label">📧 Email:</span> <span id="card-recipient-email">-</span></div>
+                            <div class="detail-row"><span class="detail-label">🏢 Company:</span> <span id="card-recipient-company">-</span></div>
+                            <div class="detail-row"><span class="detail-label">💼 Role:</span> <span id="card-recipient-role">-</span></div>
+                            <div class="detail-row"><span class="detail-label">💡 Note:</span> <span id="card-personalization">-</span></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Candidate Details</div>
+                            <div class="detail-row"><span class="detail-label">Name:</span> <span id="card-candidate-name">-</span></div>
+                            <div class="detail-row"><span class="detail-label">Background:</span> <span id="card-candidate-bg">-</span></div>
+                            <div class="detail-row"><span class="detail-label">Portfolio:</span> <a id="card-candidate-portfolio" href="#" target="_blank">-</a></div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="card">
+                            <div class="card-title">Outreach Draft Editor</div>
+                            <div id="loader" style="display: none;">
+                                <div class="spinner"></div>
+                                <p style="text-align: center; color: var(--text-muted);">Refining tone using Groq Llama-3.1 API...</p>
+                            </div>
+                            <div id="editor-fields">
+                                <div class="form-group">
+                                    <label for="subject-input">Subject Line</label>
+                                    <input type="text" id="subject-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="body-input">Email Body</label>
+                                    <textarea id="body-input" rows="10"></textarea>
+                                </div>
+                                <div class="warnings-box" id="warnings-box" style="display: none;">
+                                    <strong>⚠️ Validation Alerts:</strong>
+                                    <ul id="warnings-list"></ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="executeOutreach('sent')">📤 Send Email</button>
+                                    <button class="btn btn-secondary" onclick="executeOutreach('drafted')">📁 Create Draft</button>
+                                    <button class="btn btn-danger" onclick="executeOutreach('skipped')">⏭️ Skip</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            renderTarget();
+        }
+    </script>
+</body>
+</html>
